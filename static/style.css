@@ -1,0 +1,133 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+    color: #222;
+}
+
+nav {
+    background: #222;
+    padding: 14px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+main {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card, .student-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+.student-card {
+    max-width: 500px;
+    margin: 50px auto;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+button, .button, .class-button {
+    display: inline-block;
+    padding: 10px 14px;
+    margin-top: 15px;
+    border: 0;
+    border-radius: 6px;
+    background: #222;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.class-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.class-button {
+    margin-top: 0;
+}
+
+.class-button.selected {
+    outline: 3px solid #888;
+}
+
+.danger {
+    background: #8b0000;
+}
+
+.active-box {
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #555;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.code {
+    font-size: 42px;
+    font-weight: bold;
+    letter-spacing: 6px;
+    margin: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 9px;
+    text-align: left;
+}
+
+th {
+    background: #eee;
+}
+
+.message, .error, .success {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.message {
+    background: #e8e8e8;
+}
+
+.error {
+    background: #ffd9d9;
+}
+
+.success {
+    background: #dff5df;
+}

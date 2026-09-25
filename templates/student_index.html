@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='student_css.css')}}">
+</head>
+<body>
+    
+
+   <div id="container"> 
+    <h1>STUDENT ATTENDANCE</h1>
+		<section class= inputs>
+      
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if success %}
+        <div class="success">{{ success }}</div>
+    {% endif %}
+
+			<form action="{{ url_for('submit_attendance') }}" method="POST">
+                <label>Enter ID number</label>
+			    <input type="text" name="student_id" id="id_number" placeholder="152053" required>
+
+                <label><br>PIN</label>
+                <input type="text" name="pin" id="pin" placeholder="" required>
+
+			    <label><br>Class Code</label>
+			    <input type="text" name="attendance_code" id="class_code" placeholder="AB45LKJ" required>
+                <button class="sub_buttn" type="submit">Submit</button>
+            </form>
+        </section>
+		
+        {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <!-- The 'category' variable can be used as a CSS class (like 'success' or 'error') -->
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+</div>
+</body>
+
+</html>

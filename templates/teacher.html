@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>SmartAttend — Teacher Dashboard</h1>
+
+<section class="card">
+    <h2>Import a Class</h2>
+    <p>Upload one CSV containing the students for this specific class.</p>
+
+    <form action="{{ url_for('import_class') }}" method="post" enctype="multipart/form-data">
+        <label>Class / Subject</label>
+        <input type="text" name="class_name" placeholder="CCE103" required>
+
+        <label>School Year</label>
+        <input type="text" name="school_year" placeholder="2026-2027" required>
+
+        <label>Semester</label>
+        <input type="text" name="semester" placeholder="1st Semester" required>
+
+        <label>Student CSV</label>
+        <input type="file" name="csv_file" accept=".csv" required>
+
+        <button type="submit">Import Class</button>
+    </form>
+
+    <p><strong>CSV columns:</strong> student_id, first_name, last_name, pin</p>
+    <p>Optional columns: course, year_level</p>
+</section>
+
+<section class="card">
+    <h2>Classes</h2>
+    <div class="class-list">
+        {% for c in classes %}
+            <a class="class-button {% if selected_class and selected_class.class_id == c.class_id %}selected{% endif %}"
+               href="{{ url_for('teacher_dashboard', class_id=c.class_id) }}">
+                {{ c.class_name }}<br>
+                <small>{{ c.school_year }} • {{ c.semester }} • {{ c.student_count }} students</small>
+            </a>
+        {% else %}
+            <p>No classes imported yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% if selected_class %}
+<section class="card">
+    <h2>{{ selected_class.class_name }}</h2>
+    <p>{{ selected_class.school_year }} • {{ selected_class.semester }}</p>
+
+    {% if active_session %}
+        <div class="active-box">
+            <h3>Attendance is Active</h3>
+            <div class="code">{{ active_session.attendance_code }}</div>
+            <p>Time remaining: <span id="countdown">10:00</span></p>
+            <button class="danger" onclick="endAttendance({{ active_session.session_id}})">
+                End Attendance
+            </button>
+            <a class="button" href="{{ url_for('export_attendance', session_id=active_session.session_id) }}">
+                Export XLSX and Clear Session
+            </a>
+        </div>
+
+        <h3>Live Attendance</h3>
+        <table id="attendance-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Time In</th>
+                    <th>Status</th>
+                    <th>Flag</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <script>
+            const sessionId = {{ active_session.session_id }};
+            const endTime = new Date("{{ active_session.end_time.isoformat() }}");
+
+            async function refreshAttendance() {
+                const response = await fetch(`/teacher/session/${sessionId}/data`);
+                if (!response.ok) return;
+
+                const data = await response.json();
+                const tbody = document.querySelector("#attendance-table tbody");
+
+                tbody.innerHTML = "";
+                for (const row of data.attendance) {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${row.student_id}</td>
+                        <td>${row.name}</td>
+                        <td>${row.time_in}</td>
+                        <td>${row.status}</td>
+                        <td>${row.is_flagged ? "SUSPICIOUS" : ""}</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+
+                if (!data.session.is_active) {
+                    location.reload();
+                }
+            }
+
+            function updateCountdown() {
+                const seconds = Math.max(0, Math.floor((endTime - new Date()) / 1000));
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+
+                document.getElementById("countdown").textContent =
+                    `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+                if (seconds <= 0) {
+                    location.reload();
+                }
+            }
+
+            async function endAttendance(sessionId) {
+                await fetch(`/end-attendance/${sessionId}`, { method: "POST" });
+                location.reload();
+            }
+
+            refreshAttendance();
+            setInterval(refreshAttendance, 2000);
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        </script>
+
+    {% else %}
+        <form action="{{ url_for('start_attendance', class_id=selected_class.class_id) }}" method="post">
+            <button type="submit">START ATTENDANCE</button>
+        </form>
+    {% endif %}
+</section>
+
+<section class="card">
+    <h2>Students in {{ selected_class.class_name }}</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.student_id }}</td>
+                <td>{{ student.last_name }}, {{ student.first_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+{% endblock %}
