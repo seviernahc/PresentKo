@@ -102,3 +102,21 @@ input[type="text"]:focus {
     opacity: 80%;
     margin-top: 10px;
 }
+
+.message, .error, .success {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.message {
+    background: #e8e8e8;
+}
+
+.error {
+    background: #ffd9d9;
+}
+
+.success {
+    background: #dff5df;
+}
