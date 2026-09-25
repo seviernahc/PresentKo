@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0">
+    <title>PresentKo</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+
+            background-image:
+            linear-gradient(135deg, rgba(212, 222, 123, 0.55), rgba(110, 30, 30, 0.55) ),
+            url('../static/bg2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            backdrop-filter: blur(8px) ;
+        }
+
+        /* 1. Main vertical wrapper to keep welcome text on top */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Styling for the Welcome Header */
+        .welcome-text {
+            color: white;
+            font-size: 2rem;
+            margin: 0;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+            align-self: flex-start; /* Aligns text to the left side above the cards */
+        }
+
+        /* 2. Horizontal row container for the selection cards */
+        .cards-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid white; /* Red borders matching your screenshot */
+            padding: 5px;
+            border-radius: 10px;
+            width: 200px;
+            height: 300px;
+            transition: 0.5s; /* Smooth animation speed adjustment */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .card:hover {
+            background-color: rgb(170, 67, 67);
+            border:  4px solid white;
+        }
+
+        .card h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Container -->
+    <div class="page-container">
+        
+        <!-- Welcome Text sits on top -->
+        <h1 class="welcome-text">Welcome, Ga!</h1>
+        
+        <!-- Cards sit directly below the header in a horizontal row -->
+        <div class="cards-row">
+            <div class="card" id="student">
+                <h2>Student</h2>
+            </div>
+
+            <script>
+                document.getElementById('student').addEventListener('click', function(){
+                    window.location.href = "{{url_for('student_page')}}"
+                })
+            </script>
+
+            <div class="card" id="teacher_card">
+                <h2>Teacher</h2>
+            </div>
+            
+            <script>
+                document.getElementById('teacher_card').addEventListener('click', function(){
+                    window.location.href = "{{url_for('teacher_dashboard')}}"
+                })
+            </script>
+        </div>
+
+    </div>
+
+</body>
+</html>
