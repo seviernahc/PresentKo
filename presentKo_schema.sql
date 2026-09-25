@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS smartattend;
-USE smartattend;
+CREATE DATABASE IF NOT EXISTS presentKo;
+USE presentKo;
 
 CREATE TABLE student (
     student_id VARCHAR(20) PRIMARY KEY,
