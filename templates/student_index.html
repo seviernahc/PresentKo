@@ -1,51 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='student_css.css')}}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Attendance | PresentKo</title>
+<style>
+  :root {
+    --olive: 212, 222, 123;
+    --maroon: 110, 30, 30;
+    --red: #cc2626;
+    --red-dark: #a81c1c;
+    --text: #1c1e2b;
+    --muted: #596073;
+    --border: #cfd3de;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 20px;
+    font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    color: var(--text);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Same blurred photo + colour wash as the home page */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -20px;
+    z-index: -1;
+    background-image:
+      linear-gradient(135deg, rgba(var(--olive), 0.55), rgba(var(--maroon), 0.65)),
+      url("{{ url_for('static', filename='bg2.jpg') }}");
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+  }
+
+  /* The white card is unchanged from your design */
+  #container {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px 45px 44px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+    animation: rise 0.6s ease-out both;
+  }
+
+  h1 {
+    margin: 0 0 28px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    color: var(--text);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input::placeholder { color: #9aa0b1; }
+
+  input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(204, 38, 38, 0.2);
+  }
+
+  .sub_buttn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px;
+    font: inherit;
+    font-weight: 700;
+    color: #fff;
+    background: var(--red);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+
+  .sub_buttn:hover,
+  .sub_buttn:focus-visible {
+    background: var(--red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(168, 28, 28, 0.35);
+    outline: none;
+  }
+
+  .sub_buttn:active { transform: none; }
+
+  /* Messages (error / success / flash) */
+  .error, .success, .alert {
+    margin: 0 0 18px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+  .error, .alert-error, .alert-danger { background: #fdeaea; color: #b42323; border: 1px solid #f3b7b7; }
+  .success, .alert-success            { background: #e6f6ec; color: #17743e; border: 1px solid #a9deb9; }
+  .alert-info, .alert-message         { background: #eaf1fb; color: #24508f; border: 1px solid #b4cbee; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 480px) {
+    #container { padding: 30px 22px 34px; }
+    h1 { font-size: 1.35rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #container { animation: none; }
+    .sub_buttn { transition: none; }
+    .sub_buttn:hover, .sub_buttn:focus-visible { transform: none; }
+  }
+</style>
 </head>
 <body>
-    
 
-   <div id="container"> 
+  <main id="container">
     <h1>STUDENT ATTENDANCE</h1>
-		<section class= inputs>
-      
+
     {% if error %}
-        <div class="error">{{ error }}</div>
+      <div class="error" role="alert">{{ error }}</div>
     {% endif %}
 
     {% if success %}
-        <div class="success">{{ success }}</div>
+      <div class="success" role="status">{{ success }}</div>
     {% endif %}
 
-			<form action="{{ url_for('submit_attendance') }}" method="POST">
-                <label>Enter ID number</label>
-			    <input type="text" name="student_id" id="id_number" placeholder="152053" required>
-
-                <label><br>PIN</label>
-                <input type="text" name="pin" id="pin" placeholder="" required>
-
-			    <label><br>Class Code</label>
-			    <input type="text" name="attendance_code" id="class_code" placeholder="AB45LKJ" required>
-                <button class="sub_buttn" type="submit">Submit</button>
-            </form>
-        </section>
-		
-        {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="flash-messages">
-          {% for category, message in messages %}
-            <!-- The 'category' variable can be used as a CSS class (like 'success' or 'error') -->
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+      {% endfor %}
     {% endwith %}
-</div>
-</body>
 
+    <form action="{{ url_for('submit_attendance') }}" method="POST">
+      <div class="field">
+        <label for="id_number">Enter ID number</label>
+        <input type="text" name="student_id" id="id_number" placeholder="152053" autocomplete="off" required autofocus>
+      </div>
+
+      <div class="field">
+        <label for="pin">PIN</label>
+        <input type="password" name="pin" id="pin" autocomplete="off" required>
+      </div>
+
+      <div class="field">
+        <label for="class_code">Class Code</label>
+        <input type="text" name="attendance_code" id="class_code" placeholder="AB45LKJ" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
+      </div>
+
+      <button class="sub_buttn" type="submit">Submit</button>
+    </form>
+  </main>
+
+</body>
 </html>
