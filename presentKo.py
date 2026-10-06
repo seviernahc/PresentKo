@@ -48,7 +48,7 @@ def finish_expired_sessions(cursor):
 
 @app.route("/")
 def index():
-    return render_template('base.html')
+    return render_template('home.html')
 
 
 @app.route("/teacher")
@@ -487,6 +487,40 @@ def export_attendance(session_id):
         cursor.close()
         db.close()
 
+@app.route("/login")
+def login():
+    return render_template("teacher_login.html")
+
+@app.route("/loginsubmit", methods=["POST"])
+def loginsubmit():
+    # Handle login submission logic here
+    db = get_db_connection()
+    cursor = db.cursor(dictionary=True)
+    try:
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "").strip()
+
+        if not username or not password:
+            flash("Please enter both username and password.")
+            return redirect(url_for("login"))
+
+        cursor.execute("""
+            SELECT username, password
+            FROM account
+            WHERE username = %s
+        """, (username,))
+        user = cursor.fetchone()
+
+        if not user or not check_password_hash(user["password"], password):
+            flash("Invalid username or password.")
+            return redirect(url_for("login"))
+
+        # Successful login logic here (e.g., session management)
+        flash("Login successful!")
+        return redirect(url_for("teacher_dashboard"))
+    finally:
+        cursor.close()
+        db.close()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
