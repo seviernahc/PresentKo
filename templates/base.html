@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<nav>
-    <a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a>
-</nav>
 
 <main>
     {% with messages = get_flashed_messages() %}
