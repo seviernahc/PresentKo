@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teacher Login | PresentKo</title>
+<style>
+  :root {
+    --olive: 212, 222, 123;
+    --maroon: 110, 30, 30;
+    --hover: 140, 40, 40;
+    --glass-border: rgba(255, 255, 255, 0.55);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 20px;
+    font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    color: #fff;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Same blurred photo + colour wash as the home page */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -20px;
+    z-index: -1;
+    background-image:
+      linear-gradient(135deg, rgba(var(--olive), 0.55), rgba(var(--maroon), 0.65)),
+      url("{{ url_for('static', filename='bg2.jpg') }}");
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+  }
+
+  .card {
+    width: 100%;
+    max-width: 400px;
+    padding: 36px 32px;
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    background: rgba(40, 10, 10, 0.35);   /* slightly darker than home so the form stays readable */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.3);
+    animation: rise 0.6s ease-out both;
+  }
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: 1.8rem;
+    text-align: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  }
+
+  .sub {
+    margin: 0 0 24px;
+    text-align: center;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  label { display: block; margin-bottom: 6px; font-size: 0.85rem; font-weight: 600; }
+  .field { margin-bottom: 18px; }
+
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  }
+
+  input:focus {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: #fff;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Stop Chrome's autofill from turning the fields white */
+  input:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    caret-color: #fff;
+    transition: background-color 9999s ease-in-out 0s;
+    box-shadow: 0 0 0 1000px rgba(90, 30, 30, 0.9) inset;
+  }
+
+  .pw { position: relative; }
+  .pw input { padding-right: 64px; }
+
+  .toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 8px;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    opacity: 0.85;
+  }
+  .toggle:hover, .toggle:focus-visible { opacity: 1; text-decoration: underline; outline: none; }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(var(--hover), 0.85);
+    border: 1px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .btn:hover, .btn:focus-visible {
+    background: rgba(170, 67, 67, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 3px #fff, 0 10px 24px rgba(0, 0, 0, 0.35);
+    outline: none;
+  }
+  .btn:active { transform: none; }
+
+  .flash {
+    margin: 0 0 18px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+    background: rgba(255, 90, 90, 0.25);
+    border: 1px solid rgba(255, 150, 150, 0.7);
+  }
+  .flash.success {
+    background: rgba(60, 200, 120, 0.25);
+    border-color: rgba(140, 240, 180, 0.7);
+  }
+
+  .back {
+    display: block;
+    margin-top: 18px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.9;
+  }
+  .back:hover, .back:focus-visible { text-decoration: underline; opacity: 1; outline: none; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 420px) { .card { padding: 28px 20px; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
+    .btn { transition: none; }
+    .btn:hover, .btn:focus-visible { transform: none; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <h1>Teacher login</h1>
+    <p class="sub">Enter your username and password</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+        <p class="flash {{ 'success' if 'successful' in message else '' }}" role="alert">{{ message }}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="post" action="{{ url_for('loginsubmit') }}">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw">
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <button type="button" class="toggle" id="toggle">Show</button>
+        </div>
+      </div>
+
+      <button class="btn" type="submit">Log in</button>
+    </form>
+
+    <a class="back" href="{{ url_for('index') }}">Back</a>
+  </main>
+
+  <script>
+    const pw = document.getElementById('password');
+    document.getElementById('toggle').addEventListener('click', e => {
+      const show = pw.type === 'password';
+      pw.type = show ? 'text' : 'password';
+      e.target.textContent = show ? 'Hide' : 'Show';
+    });
+  </script>
+</body>
+</html>
