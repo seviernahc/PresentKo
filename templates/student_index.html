@@ -30,6 +30,7 @@
     overflow-x: hidden;
   }
 
+  
   /* Same blurred photo + colour wash as the home page */
   body::before {
     content: "";
@@ -43,9 +44,10 @@
     background-position: center;
     filter: blur(8px);
   }
+ 
 
   /* The white card is unchanged from your design */
-  #container {
+ #container {
     width: 100%;
     max-width: 450px;
     padding: 40px 45px 44px;
@@ -62,10 +64,10 @@
     text-align: center;
     letter-spacing: 0.01em;
   }
+  
+ .field { margin-bottom: 16px; }
 
-  .field { margin-bottom: 16px; }
-
-  label {
+   label {
     display: block;
     margin-bottom: 6px;
     font-size: 0.88rem;
@@ -73,7 +75,7 @@
     color: var(--muted);
   }
 
-  input {
+   input {
     width: 100%;
     padding: 12px 14px;
     font: inherit;
@@ -85,7 +87,7 @@
     transition: border-color 0.2s, box-shadow 0.2s;
   }
 
-  input::placeholder { color: #9aa0b1; }
+   input::placeholder { color: #9aa0b1; }
 
   input:focus {
     border-color: var(--red);
@@ -185,3 +187,5 @@
 
 </body>
 </html>
+
+
