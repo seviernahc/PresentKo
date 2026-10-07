@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS presentKo;
-USE presentKo;
+Use presentKo;
 
 CREATE TABLE student (
     student_id VARCHAR(20) PRIMARY KEY,
@@ -25,11 +25,11 @@ CREATE TABLE enrollment (
     class_id INT NOT NULL,
     enrolled_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_enrollment_student
+    CONSTRAINT FK_enrollment_student
         FOREIGN KEY (student_id) REFERENCES student(student_id)
         ON DELETE CASCADE,
 
-    CONSTRAINT fk_enrollment_class
+    CONSTRAINT FK_enrollment_class
         FOREIGN KEY (class_id) REFERENCES class(class_id)
         ON DELETE CASCADE,
 
@@ -45,7 +45,7 @@ CREATE TABLE attendance_session (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_session_class
+    CONSTRAINT FK_session_class
         FOREIGN KEY (class_id) REFERENCES class(class_id)
         ON DELETE CASCADE
 );
@@ -59,11 +59,11 @@ CREATE TABLE attendance (
     device_token VARCHAR(255),
     is_flagged BOOLEAN NOT NULL DEFAULT FALSE,
 
-    CONSTRAINT fk_attendance_session
+    CONSTRAINT FK_attendance_session
         FOREIGN KEY (session_id) REFERENCES attendance_session(session_id)
         ON DELETE CASCADE,
 
-    CONSTRAINT fk_attendance_student
+    CONSTRAINT FK_attendance_student
         FOREIGN KEY (student_id) REFERENCES student(student_id)
         ON DELETE CASCADE,
 
