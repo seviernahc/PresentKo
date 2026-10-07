@@ -32,7 +32,7 @@ def generate_code(length=6):
 
 
 def get_device_token():
-    token = request.cookies.get("smartattend_device")
+    token = request.cookies.get("presentko_device")
     if not token:
         token = str(uuid.uuid4())
     return token
