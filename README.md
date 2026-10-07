@@ -1,4 +1,4 @@
-# SmartAttend
+# PresentKo
 
 A simple local Wi-Fi classroom attendance system using Flask + MySQL.
 
