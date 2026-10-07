@@ -78,45 +78,46 @@ input[type="text"]:focus {
     transition: background 0.15s ease;
 }
 
-.sub_buttn:hover {
-    background: #e41111;
-}
+    .sub_buttn:hover {
+        background: #e41111;
+    }
 
-.sub_buttn:active {
-    background: #e16060;
-}
+    .sub_buttn:active {
+        background: #e16060;
+    }
 
 
-.alert-success {
-    background-color: aquamarine;
-    width: 100%;
-    padding: 12px;
-    background: #52dc87;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease;
-    opacity: 80%;
-    margin-top: 10px;
-}
+    .alert-success {
+        background-color: aquamarine;
+        width: 100%;
+        padding: 12px;
+        background: #52dc87;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s ease;
+        opacity: 80%;
+        margin-top: 10px;
+    }
 
-.message, .error, .success {
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-}
+    .message, .error, .success {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+    }
 
-.message {
-    background: #e8e8e8;
-}
+    .message {
+        background: #e8e8e8;
+    }
 
-.error {
-    background: #ffd9d9;
-}
+    .error {
+        background: #ffd9d9;
+    }
 
-.success {
-    background: #dff5df;
-}
+    .success {
+        background: #dff5df;
+    }
+
