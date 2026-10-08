@@ -396,7 +396,7 @@ def submit_attendance():
             success=f"Attendance recorded successfully. Status: {status}"
         ))
         response.set_cookie(
-            "smartattend_device",
+            "presentKo",
             device_token,
             max_age=60 * 60 * 24 * 365,
             httponly=True,
