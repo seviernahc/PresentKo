@@ -9,16 +9,16 @@
 
     <form action="{{ url_for('loginsubmit') }}" method="post" enctype="multipart/form-data">
         <label>Class / Subject</label>
-        <input type="text" name="class_name" placeholder="CCE103" required>
+        <input type="text" name="class_name" placeholder="CCE103" >
 
         <label>School Year</label>
-        <input type="text" name="school_year" placeholder="2026-2027" required>
+        <input type="text" name="school_year" placeholder="2026-2027" >
 
         <label>Semester</label>
-        <input type="text" name="semester" placeholder="1st Semester" required>
+        <input type="text" name="semester" placeholder="1st Semester" >
 
         <label>Student CSV</label>
-        <input type="file" name="csv_file" accept=".csv" required>
+        <input type="file" name="csv_file" accept=".csv" >
 
         <button type="submit">Import Class</button>
     </form>
